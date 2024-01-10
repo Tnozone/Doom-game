@@ -22,6 +22,12 @@ typedef struct
   int sl,sr;             //strafe left, right 
   int m;                 //move up, down, look up, down
 }keys; keys K;
+
+typedef struct 
+{
+  float cos[360];           //save sin cas values  0-360 degrees
+  float sin[360];
+}math; math M;
 //------------------------------------------------------------------------------
 
 void pixel(int x,int y, int c)                  //draw a pixel at x/y with rgb
@@ -120,7 +126,13 @@ void KeysUp(unsigned char key,int x,int y)
 }
 
 void init()
-{       
+{int x;
+ //store sin/cos in degrees
+  for(x=0;x<360;x++)                            //precalculate sin/cos in degrees
+  {
+    M.cos[x]=cos(x/180.0*M_PI);
+    M.sin[x]=sin(x/180.0*M_PI);
+  }
 }
 
 int main(int argc, char* argv[])
