@@ -28,6 +28,13 @@ typedef struct
   float cos[360];           //save sin cas values  0-360 degrees
   float sin[360];
 }math; math M;
+
+typedef struct 
+{
+  int x,y,z;           //player position. Z is up
+  int a;             //player angle of rotation left right 
+  int l;                 //variable to look up and down
+}player; player P;
 //------------------------------------------------------------------------------
 
 void pixel(int x,int y, int c)                  //draw a pixel at x/y with rgb
@@ -50,8 +57,10 @@ void pixel(int x,int y, int c)                  //draw a pixel at x/y with rgb
 void movePlayer()
 {
   //move up, down, left, right
-  if(K.a ==1 && K.m==0){ printf("left\n");}  
-  if(K.d ==1 && K.m==0){ printf("right\n");}
+  if(K.a ==1 && K.m==0){ P.a-=4; if(P.a<0) { P.a+=360;}}  
+  if(K.d ==1 && K.m==0){ P.a+=4; if(P.a>359 ) { P.a-=360;}}
+  int dx=M.sin[P.a]*10.0;
+  int dy=M.cos[P.a]*10.0;
   if(K.w ==1 && K.m==0){ printf("up\n");}
   if(K.s ==1 && K.m==0){ printf("down\n");}
   //strafe left, right
@@ -133,6 +142,8 @@ void init()
     M.cos[x]=cos(x/180.0*M_PI);
     M.sin[x]=sin(x/180.0*M_PI);
   }
+ //init player
+  p.x=70; P.y=-110; P.z=20; P.a=0; P.l=0;      //init player variables
 }
 
 int main(int argc, char* argv[])
